@@ -3,47 +3,41 @@ include 'connection/connection.php';
     $srcode=$_POST['srcode'];
     $fullname=$_POST['fullname'];
     $status = "ONLINE";
-    // $timestamp = $_POST['timestamp'];
-    
+    $limitsql = "SELECT * FROM `libraryinfo`";
+    $limit= mysqli_query($conn, $limitsql);
     $search = "SELECT * FROM `libraryvisitors` WHERE `SR_Code` = '$srcode'";
     $result = mysqli_query($conn, $search);
     if (mysqli_num_rows($result) > 0) {
-        // echo json_encode(array("statusCode"=>200));
         $Stat = "SELECT * FROM `libraryvisitors` WHERE `SR_Code` = '$srcode'";
-
-        if($row = mysqli_fetch_assoc(mysqli_query($conn, $Stat))) {
+        $row = mysqli_fetch_assoc(mysqli_query($conn, $Stat))
+        $limitval = mysqli_fetch_assoc(mysqli_query($limit));
+        $getOcc = $limitval['OccupiedSlots'];
+        $getUnocc = $limitval['UnoccupiedSlots'];
+        $getMax = $limitval['MaxSlots'];
+        echo $getOcc;
+        if($row) {
             $getStatus = $row['Status'];
             echo $getStatus;
-           if($getStatus == "ONLINE"){
-            $insertLog = "INSERT INTO `logs`(`StudentID`, `Status`) VALUES ('$srcode','Time-Out')";
-             $update = "UPDATE `libraryvisitors` SET `status`='OFFLINE' WHERE  `SR_Code`= '$srcode'";
-             mysqli_query($conn, $insertLog);
-             mysqli_query($conn, $update);
-             // echo json_encode(array("statusCode"=>200));
-             // echo "okay";
+            if($getStatus == "OFFLINE" && $getOcc < $getMax){
+    $insertLog = "INSERT INTO `logs`(`StudentID`, `Status`) VALUES ('$srcode','Time-In')";
+    mysqli_query($conn, $insertLog);
+    $update = "UPDATE `libraryvisitors` SET `status`='ONLINE' WHERE  `SR_Code`= '$srcode'";
+    mysqli_query($conn, $update);
+    $getCount = "SELECT COUNT(*) FROM `libraryvisitors` WHERE `Status` = 'ONLINE'";
+    $Count = mysqli_fetch_assoc(mysqli_query($conn, $getCount));
+    $occ = $Count[0];
+     $updateSlots = "UPDATE `libraryinfo` SET `OccupiedSlots`='$occ'";
+    mysqli_query($conn, $updateSlots);
             }
          
          else{
-            // $update = "UPDATE `logs` SET `status`='Time-In' WHERE  `StudentID`= '$srcode'";
-            // mysqli_query($conn, $update);
-            // echo "time-in";
-            $sql2 = "INSERT INTO `logs`(`StudentID`, `Status`) VALUES ('$srcode','Time-In')";
-        mysqli_query($conn, $sql2);
-         $update = "UPDATE `libraryvisitors` SET `status`='ONLINE' WHERE  `SR_Code`= '$srcode'";
-             mysqli_query($conn, $update);
-            // echo json_encode(array("statusCode"=>200));
-
+    $insertLog = "INSERT INTO `logs`(`StudentID`, `Status`) VALUES ('$srcode','Time-Out')";
+    mysqli_query($conn, $insertLog);
+    $update = "UPDATE `libraryvisitors` SET `status`='OFFLINE' WHERE  `SR_Code`= '$srcode'";
+    mysqli_query($conn, $update);
          }
             } 
-        // }
-        // $update = "UPDATE `logs` SET `In`='$timestamp',`Out`='' WHERE  `StudentID`= '$srcode'";
-        // $results=mysqli_query($conn, $update);
-        // if($result){
-        //     echo json_encode(array("statusCode"=>200));
-        // }
-        // else{
-        //     echo json_encode(array("statusCode"=>201));
-        // }
+        
 
     }
 
@@ -57,14 +51,6 @@ include 'connection/connection.php';
         echo json_encode(array("statusCode"=>201));
 
     }
-    // $sql1 = "INSERT INTO `logs`(`SR_Code`, `Fullname`, `Status`) VALUES ('$srcode','$fullname','$status')";
-    // $sql2 = "INSERT INTO `logs`(`StudentID`, `In`, `Out`) VALUES ('$srcode','','')"
-    // $sql3 = "UPDATE `libraryvisitors` SET `SR_Code`='[value-1]',`Fullname`='[value-2]',`Status`='[value-3]' WHERE 1"
-    // if (mysqli_query($conn, $sql)) {
-    //     // echo json_encode(array("statusCode"=>200));
-    // } 
-    // else {
-    //     // echo json_encode(array("statusCode"=>201));
-    // }
+
     // mysqli_close($conn);
 ?>

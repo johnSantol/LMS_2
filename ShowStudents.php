@@ -178,9 +178,9 @@
                             </div>
                             <div class="card-body">
                                 <div class="message-box contact-box">
-                                    <h2 class="add-ct-btn"><button type="button"
+                                    <!-- <h2 class="add-ct-btn"><button type="button"
                                             class="btn btn-circle btn-lg btn-success waves-effect waves-dark">+</button>
-                                    </h2>
+                                    </h2> -->
 <?php
 $sql = "SELECT * FROM `libraryvisitors` Where status = 'ONLINE'";
 $result = mysqli_query($conn, $sql);
@@ -236,9 +236,9 @@ else {
                             </div>
                             <div class="card-body">
                                 <div class="message-box contact-box">
-                                    <h2 class="add-ct-btn"><button type="button"
+                                    <!-- <h2 class="add-ct-btn"><button type="button"
                                             class="btn btn-circle btn-lg btn-success waves-effect waves-dark">+</button>
-                                    </h2>
+                                    </h2> -->
 <?php
 $sql = "SELECT * FROM `libraryvisitors` Where status = 'OFFLINE'";
 $result = mysqli_query($conn, $sql);

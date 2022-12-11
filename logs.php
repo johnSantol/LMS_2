@@ -21,6 +21,13 @@
     <!-- Custom CSS -->
     <link href="css/style.min.css" rel="stylesheet">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- addtion -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"> -->
 </head>
 <body>
    
@@ -120,7 +127,7 @@
                     </div>
                     <div class="col-4 link-wrap">
                         <!-- item-->
-                        <a href="" class="link" data-toggle="tooltip" title="" data-original-title="Logout"><i
+                        <a href="index.php" class="link" data-toggle="tooltip" title="" data-original-title="Logout"><i
                                 class="mdi mdi-power"></i></a>
                     </div>
                 </div>
@@ -176,7 +183,7 @@
                                 <h4 class="card-title">Student Logs</h4>
                                 <!-- <h6 class="card-subtitle">Add class <code>.table</code></h6> -->
                                 <div class="table-responsive">
-                                    <table class="table user-table">
+                                    <table  id="example" class="table user-table">
                                          <thead>
                                             <tr>
                                                 <th class="border-top-0">SR-Code</th>
@@ -301,3 +308,9 @@ Toast.fire({
 })
     
     </script>
+
+<script>
+    $(document).ready(function () {
+    $('#example').DataTable();
+});
+</script>
